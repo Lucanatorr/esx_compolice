@@ -13,6 +13,7 @@ dependencies {
 }
 
 server_scripts {
+	'server/version_check.lua',
 	'@es_extended/locale.lua',
 	'locales/en.lua',
 	'config.lua',
