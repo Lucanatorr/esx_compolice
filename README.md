@@ -41,6 +41,7 @@ Commmunity Police script designed for ESX servers.
   ```lua
   if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'compolice' then
   ```
+  
 
 *Feel free to edit the resource but make sure to pass it through and give me credits*
 *If you edit and want to release on the forums/github message me first*
@@ -51,6 +52,7 @@ https://github.com/ESX-Org/esx_policejob
 
 ## Requirements
 - es_extended (https://github.com/ESX-Org/es_extended)
+- gcphone (https://github.com/N3MTV/gcphone)
 - esx_policejob (https://github.com/ESX-Org/esx_policejob)
 - mythic_progressbar (https://github.com/XxFri3ndlyxX/mythic_progressbar)
 
