@@ -52,7 +52,7 @@ https://github.com/ESX-Org/esx_policejob
 
 ## Requirements
 - es_extended (https://github.com/ESX-Org/es_extended)
-- gcphone (https://github.com/N3MTV/gcphone)
+- gcphone (https://github.com/N3MTV/gcphone) **(or any other phone script)**
 - esx_policejob (https://github.com/ESX-Org/esx_policejob)
 - mythic_progressbar (https://github.com/XxFri3ndlyxX/mythic_progressbar)
 
