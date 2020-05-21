@@ -25,21 +25,21 @@ Commmunity Police script designed for ESX servers.
 3. Navigate to 'esx_policejob/server/main.lua' **(this is very important)**
   	Anywhere you see:
   ```lua
-  if xPlayer.job.name == 'police'
+  	if xPlayer.job.name == 'police'
   ```
   	Add the following: 
   ```lua
-  if xPlayer.job.name == 'police' or if xPlayer.job.name == 'compolice' then
+  	if xPlayer.job.name == 'police' or if xPlayer.job.name == 'compolice' then
   ```
 
 4. Navigate to 'esx_policejob/client/main.lua' **(this is also very important)**
   	Anywhere you see:
   ```lua
-  if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police'
+  	if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police'
   ```
   	Add the following: 
   ```lua
-  if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'compolice' then
+  	if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'compolice' then
   ```
   
 
