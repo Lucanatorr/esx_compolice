@@ -79,8 +79,6 @@ Citizen.CreateThread(function()
                     Citizen.Wait(50)
                     
                     TriggerServerEvent('esx_compolice:onDuty', isOnDuty)
-                    TriggerEvent('esx_policejob:updateBlip')
-                   
                 end
             end
 
@@ -137,6 +135,36 @@ AddEventHandler('esx_compolice:spawnVehicle', function()
 
     if not IsPedInAnyVehicle(GetPlayerPed(-1), false) then
         if model ~= nil then
+            TriggerEvent("mythic_progressbar:client:progress", {
+                name = "getting_vehicle",
+                duration = 4500,
+                label = _U('getting_vehicle'),
+                useWhileDead = false,
+                canCancel = true,
+                controlDisables = {
+                    disableMovement = true,
+                    disableCarMovement = true,
+                    disableMouse = false,
+                    disableCombat = true,
+                },
+                animation = {
+                    animDict = "missheistdockssetup1clipboard@base",
+                    anim = "base",
+                },
+                prop = {
+                    model = "p_amb_clipboard_01",
+                    bone = 18905,
+                },
+                propTwo = {
+                    model = "prop_pencil_01",
+                    bone = 58866,
+                }
+        
+            }, function(status)
+            end)
+
+            Citizen.Wait(4550)
+
             ESX.Game.SpawnVehicle(model, {
                 x = Config.SpawnLocation.x,
                 y = Config.SpawnLocation.y,
@@ -173,6 +201,24 @@ AddEventHandler('esx_compolice:localSpawnVeh', function()
 
     if not Config.UseMarker and not IsPedInAnyVehicle(ped, false) then
         if model ~= nil then
+            TriggerEvent("mythic_progressbar:client:progress", {
+                name = "getting_vehicle",
+                duration = 4500,
+                label = _U('getting_vehicle'),
+                useWhileDead = false,
+                canCancel = true,
+                controlDisables = {
+                    disableMovement = true,
+                    disableCarMovement = true,
+                    disableMouse = false,
+                    disableCombat = true,
+                },
+        
+            }, function(status)
+            end)
+
+            Citizen.Wait(4550)
+
             ESX.Game.SpawnVehicle(model, {
                 x = coords.x,
                 y = coords.y,
@@ -210,19 +256,69 @@ AddEventHandler('esx_compolice:removeVehicle', function()
     local coords = GetEntityCoords(PlayerPedId())
 
     if IsPedInAnyVehicle(ped, false) then
+        TriggerEvent("mythic_progressbar:client:progress", {
+            name = "storing_vehicle",
+            duration = 3500,
+            label = _U('storing_vehicle'),
+            useWhileDead = false,
+            canCancel = true,
+            controlDisables = {
+                disableMovement = true,
+                disableCarMovement = true,
+                disableMouse = false,
+                disableCombat = true,
+            },
+    
+        }, function(status)
+        end)
+
+        Citizen.Wait(3500)
+
         ESX.Game.DeleteVehicle(vehicle)
 
         ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
             TriggerEvent('skinchanger:loadSkin', skin)
         end)
+
         ESX.ShowNotification(_U('now_off_duty'), false, true, 70)
         isOnDuty = false
 
         SetPedArmour(GetPlayerPed(-1), 0)
     else
+        TriggerEvent("mythic_progressbar:client:progress", {
+            name = "going_off_duty",
+            duration = 4500,
+            label = _U('going_off_duty'),
+            useWhileDead = false,
+            canCancel = true,
+            controlDisables = {
+                disableMovement = true,
+                disableCarMovement = true,
+                disableMouse = false,
+                disableCombat = true,
+            },
+            animation = {
+                animDict = "missheistdockssetup1clipboard@base",
+                anim = "base",
+            },
+            prop = {
+                model = "p_amb_clipboard_01",
+                bone = 18905,
+            },
+            propTwo = {
+                model = "prop_pencil_01",
+                bone = 58866,
+            }
+    
+        }, function(status)
+        end)
+
+        Citizen.Wait(4550)
+
         ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
             TriggerEvent('skinchanger:loadSkin', skin)
         end)
+
         ESX.ShowNotification(_U('now_off_duty2'), false, true, 70)
         isOnDuty = false
 
@@ -236,11 +332,15 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
+        
+        local isPressed = IsControlJustReleased(0, 167)
 
-        if IsControlJustReleased(0, 167) and isOnDuty and not isDead and not isHandcuffed and ESX.PlayerData.job and ESX.PlayerData.job.name == 'compolice' and not ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'police_actions') then
+        if isPressed and isOnDuty and not isDead and not isHandcuffed and ESX.PlayerData.job and ESX.PlayerData.job.name == 'compolice' and not ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'police_actions') then
             OpenPoliceActionsMenu()
-        elseif IsControlJustReleased(0, 167) and not isOnDuty then
+        elseif isPressed and not isOnDuty and ESX.PlayerData.job.name == 'compolice' or isPressed and not isOnDuty and ESX.PlayerData.job.name == 'offcompolice' then
             ESX.ShowNotification(_U('cannot_preform'), false, true, 70)
+        elseif isPressed and ESX.PlayerData.job.name ~= 'compolice' or isPressed and ESX.PlayerData.job.name ~= 'offcompolice' then
+            ESX.ShowNotification(_U('invalid_job'), false, true, 70)
         end
     end
 end)
@@ -273,7 +373,6 @@ function OpenPoliceActionsMenu()
 				{label = _U('unpaid_bills'), value = 'unpaid_bills'},
 				{label = _U('gsr_test'), value = 'gsr_test'},
 				{label = _U('revive_player'), value = 'revive'}
-				--{label = "Crimes", value = 'crimes'}
 			}
 
 
@@ -306,8 +405,6 @@ function OpenPoliceActionsMenu()
 						TriggerServerEvent('esx_gsr:Check', GetPlayerServerId(closestPlayer))
 					elseif action == 'unpaid_bills' then
 						exports['esx_policejob']:OpenUnpaidBillsMenu(closestPlayer)
-					-- elseif action == 'crimes' then
-						-- OpenCrimesMenu(closestPlayer)
 						
 						--revive start
 						elseif action == 'revive' then
