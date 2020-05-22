@@ -30,4 +30,4 @@ Config.VehicleModel = 'cp1' -- the model to spawn into
 
 Config.SpawnLocation = { x = -576.0, y = -149.52, z = 37.92, heading = 205.59 } -- vehicle spawn location if using marker
 Config.RemoveMarker = { x = -570.72, y = -143.84, z = 37.2 } -- vehicle removal marker
-Config.RetrievalMarker = { x = -556.77, y = -130.67, z = 37.2 } -- vehicle removal marker
+Config.RetrievalMarker = { x = -556.77, y = -130.67, z = 37.15 } -- vehicle removal marker
