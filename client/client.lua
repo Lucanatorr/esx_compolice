@@ -333,14 +333,12 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
         
-        local isPressed = IsControlJustReleased(0, 167)
+        local isPressed = IsDisabledControlJustReleased(0, 167)
 
         if isPressed and isOnDuty and not isDead and not isHandcuffed and ESX.PlayerData.job and ESX.PlayerData.job.name == 'compolice' and not ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'police_actions') then
             OpenPoliceActionsMenu()
-        elseif isPressed and not isOnDuty and ESX.PlayerData.job.name == 'compolice' or isPressed and not isOnDuty and ESX.PlayerData.job.name == 'offcompolice' then
+        elseif isPressed and not isOnDuty and ESX.PlayerData.job and ESX.PlayerData.job.name == 'compolice' or isPressed and not isOnDuty and ESX.PlayerData.job and ESX.PlayerData.job.name == 'offcompolice' then
             ESX.ShowNotification(_U('cannot_preform'), false, true, 70)
-        elseif isPressed and ESX.PlayerData.job.name ~= 'compolice' or isPressed and ESX.PlayerData.job.name ~= 'offcompolice' then
-            ESX.ShowNotification(_U('invalid_job'), false, true, 70)
         end
     end
 end)
