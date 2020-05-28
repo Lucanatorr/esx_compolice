@@ -2,6 +2,9 @@
 
 Commmunity Police script designed for ESX servers.
 
+## Showcase Video
+
+https://streamable.com/26nvjx
 
 ## How to use
 
